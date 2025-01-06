@@ -1,4 +1,11 @@
 import { Router } from "express";
+import { cartsManager } from "../managers/carts.manager.js";
 
-export const cartsRouter = Router();
+
+
+export const cartsRoute = Router();
+
+// RUTAS DE CARRITOS
+
+
 
