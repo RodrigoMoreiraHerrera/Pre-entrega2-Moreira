@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { productManager } from "../managers/product.manager.js";
+import { io } from "../server.js";
 
-export const prodructsRoute = Router();
+export const productsRoute = Router();
 
-prodructsRoute.get("/", async (req, res) => {
+productsRoute.get("/", async (req, res) => {
     try {
         const products = await productManager.getAll();
         res.status(200).json(products);
@@ -12,7 +13,7 @@ prodructsRoute.get("/", async (req, res) => {
     }
 });
 
-prodructsRoute.get("/:id", async (req, res) => {
+productsRoute.get("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const product = await productManager.getById({ id });
@@ -26,7 +27,7 @@ prodructsRoute.get("/:id", async (req, res) => {
     }
 });
 
-prodructsRoute.post("/", async (req, res) => {
+productsRoute.post("/", async (req, res) => {
     const { title, description, code, price, status, stock, category } = req.body;
 
     try {
@@ -39,13 +40,16 @@ prodructsRoute.post("/", async (req, res) => {
             stock,
             category,
         });
+        
+        io.emit("new-product", product);
+
         res.status(201).json(product);
     } catch (error) {
         res.status(500).json({ error: "error al guardar el producto" });
     }
 });
 
-prodructsRoute.put("/:id", async (req, res) => {
+productsRoute.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { title, description, code, price, status, stock, category } = req.body;
     try {
@@ -68,7 +72,7 @@ prodructsRoute.put("/:id", async (req, res) => {
     }
 });
 
-prodructsRoute.delete("/:id", async (req, res) => {
+productsRoute.delete("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const product = await productManager.delete({ id });

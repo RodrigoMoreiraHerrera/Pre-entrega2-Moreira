@@ -1,6 +1,14 @@
-import express from "express";
 
-import { prodructsRoute } from "./routes/products.routes.js";
+import path from "path";
+
+import express from "express";
+import { Server } from "socket.io";
+import Handlebars from "express-handlebars";
+
+import { __dirname } from "./dirname.js";
+
+import { viewsRoutes } from "./routes/views.routes.js";
+import { productsRoute } from "./routes/products.routes.js";
 import { cartsRoute } from "./routes/carts.routes.js";
 
 const app = express();
@@ -8,15 +16,42 @@ const PORT = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.resolve(__dirname, "public")));
 
+// HANDLEBARS
 
+app.engine(
+    "hbs",
+    Handlebars.engine({
+        extname: ".hbs",
+        defaultLayout: "main",
 
-app.use("/api/products", prodructsRoute);
+    })
+);
+app.set("view engine", "hbs");
+app.set("views", path.resolve(__dirname, "./views"));
+
+// RUTES
+app.use("/", viewsRoutes);
+app.use("/api/products", productsRoute);
 app.use("/api/carts", cartsRoute);
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+
+
+const server = app.listen(PORT, () => 
+    console.log(`Server running on port http://localhost:${PORT}`));
+
+export const io = new Server(server);
+
+io.on("connection", (socket) => {
+    console.log("New connection", socket.id);
+
+    socket.emit("init", products);
 });
+
+//app.listen(PORT, () => {
+ //   console.log(`Server running on port ${PORT}`);
+//});
 
 
 
