@@ -28,9 +28,7 @@ prodructsRoute.get("/:id", async (req, res) => {
 
 prodructsRoute.post("/", async (req, res) => {
     const { title, description, code, price, status, stock, category } = req.body;
-    // if (!title || !price) {
-    //     res.status(400).json({ error: 'faltan datos' });                                  //! validaciones
-    //     return;}
+
     try {
         const product = await productManager.create({
             title,

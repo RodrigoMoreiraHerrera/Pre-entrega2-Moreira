@@ -1,7 +1,7 @@
 import express from "express";
 
 import { prodructsRoute } from "./routes/products.routes.js";
-import { cartsRouter } from "./routes/carts.routes.js";
+import { cartsRoute } from "./routes/carts.routes.js";
 
 const app = express();
 const PORT = 8080;
@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api/products", prodructsRoute);
-//app.use("/api/carts", cartsRoute);
+app.use("/api/carts", cartsRoute);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

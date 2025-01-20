@@ -23,14 +23,21 @@ class CartManager {
 
         async create() {
             const id = uuid();
+
+            const verif = this.carts.find((cart) => cart.id === id);
+            if (verif) {
+                return null;
+            }
+
             const products = [];
             const cart = { id, products };
             this.carts.push(cart);
+
             try {
                 await this.saveOnFile();
                 return cart;
             } catch (error) {
-                console.error("Error al crear el carrito");
+                console.error("Error al guardar el carrito");
             }
         }
 
@@ -53,7 +60,7 @@ class CartManager {
             if (product) {
                 product.quantity += quantity;
             } else {
-                cart.products.push({ product: productId, quantity });
+                cart.products.push({ id: productId, quantity });
             }
 
 
@@ -65,8 +72,7 @@ class CartManager {
             }
         }
 
-            
-        
+
         async saveOnFile() {
                 try {
                     await fs.promises.writeFile(
