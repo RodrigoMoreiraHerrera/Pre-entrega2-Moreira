@@ -1,7 +1,14 @@
 [
   {
-    "id": "9f6d6fc1-2ad9-4799-8d7a-2c3e97d4fa25",
-    "title": "nuevo",
+    "id": "06792b00-052c-4dc7-92ac-ff15985ffc25",
+    "title": "producto1",
+    "price": 200,
+    "status": true
+  },
+  {
+    "id": "6287bab6-66e0-47a4-bcc2-55fb9c585a3b",
+    "title": "producto2",
+    "price": 400,
     "status": true
   }
 ]

@@ -1,5 +1,6 @@
 
 import path from "path";
+import fs from "fs";
 
 import express from "express";
 import { Server } from "socket.io";
@@ -9,14 +10,19 @@ import { __dirname } from "./dirname.js";
 
 import { viewsRoutes } from "./routes/views.routes.js";
 import { productsRoute } from "./routes/products.routes.js";
+//import { products } from "./routes/views.routes.js";
 import { cartsRoute } from "./routes/carts.routes.js";
+
+import { productManager } from "./managers/product.manager.js";
+
+const products = JSON.parse(fs.readFileSync(productManager.path, "utf-8"));
 
 const app = express();
 const PORT = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, "public")));
+app.use(express.static(path.resolve(__dirname, "../public")));
 
 // HANDLEBARS
 
